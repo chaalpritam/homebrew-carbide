@@ -69,6 +69,17 @@ class CarbideNode < Formula
       [reputation]
       enable_reporting        = true
       health_check_interval   = 300
+
+      # On-chain registration (optional). Leave `registry_address` empty to
+      # skip self-publishing to CarbideRegistry. When set, also expose
+      # CARBIDE_WALLET_PASSWORD in the service environment so the provider
+      # can unlock its wallet and sign the register/update transaction.
+      [wallet]
+      chain_id            = 421614                         # Arbitrum Sepolia
+      rpc_url             = "https://sepolia-rollup.arbitrum.io/rpc"
+      registry_address    = ""
+      escrow_address      = ""
+      usdc_address        = ""
     EOS
   end
 
@@ -104,6 +115,13 @@ class CarbideNode < Formula
         * max_storage_gb - how much disk you want to contribute
         * price_per_gb_month - your asking price
         * region - your provider region
+
+      Optional: to self-publish on the on-chain CarbideRegistry set
+      `wallet.registry_address` in provider.toml and export the wallet
+      password in the service environment:
+
+        launchctl setenv CARBIDE_WALLET_PASSWORD "<your-wallet-password>"
+        brew services restart carbide-node
     EOS
   end
 
